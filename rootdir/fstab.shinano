@@ -2,10 +2,14 @@
 # The filesystem that contains the filesystem checker binary (typically /system) cannot
 # specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 
-/dev/block/platform/msm_sdcc.1/by-name/system       /system           ext4    ro,barrier=1                                                  wait
-/dev/block/platform/msm_sdcc.1/by-name/cache        /cache            ext4    noatime,nosuid,nodev,barrier=1,data=ordered                   wait,check
-/dev/block/platform/msm_sdcc.1/by-name/userdata     /data             ext4    noatime,nosuid,nodev,barrier=1,data=ordered,noauto_da_alloc   wait,check,encryptable=footer
-/dev/block/platform/msm_sdcc.1/by-name/boot         /boot             emmc    defaults                                                      defaults
-/dev/block/platform/msm_sdcc.1/by-name/FOTAKernel   /recovery         emmc    defaults                                                      defaults
-/devices/msm_sdcc.2/mmc_host*                       auto              auto    defaults                                                      voldmanaged=sdcard1:auto,noemulatedsd
-/devices/platform/xhci-hcd                          auto              auto    defaults                                                      voldmanaged=usbdisk:auto
+#<src>                                                <mnt_point>            <type>  <mnt_flags and options>                                     <fs_mgr_flags>
+/dev/block/platform/msm_sdcc.1/by-name/system         /system                ext4    ro,barrier=1                                                wait,verify
+/dev/block/platform/msm_sdcc.1/by-name/userdata       /data                  ext4    noatime,nosuid,nodev,barrier=1,noauto_da_alloc,discard      wait,check,encryptable=footer,resize
+/dev/block/platform/msm_sdcc.1/by-name/cache          /cache                 ext4    noatime,nosuid,nodev,barrier=1,discard                      wait,check
+/dev/block/platform/msm_sdcc.1/by-name/boot           /boot                  emmc    defaults                                                    defaults
+/dev/block/platform/msm_sdcc.1/by-name/recovery       /recovery              emmc    defaults                                                    defaults
+/dev/block/platform/msm_sdcc.1/by-name/misc           /misc                  emmc    defaults                                                    defaults
+/dev/block/platform/msm_sdcc.1/by-name/modemst1       /boot/modem_fs1        emmc    n/a                                                         n/a
+/dev/block/platform/msm_sdcc.1/by-name/modemst2       /boot/modem_fs2        emmc    n/a                                                         n/a
+/devices/msm_sdcc.2/mmc_host                          /storage/sdcard1       vfat    nosuid,nodev                                                wait,voldmanaged=sdcard1:auto
+/devices/platform/xhci-hcd                            auto                   auto    nosuid,nodev                                                voldmanaged=usbdisk:auto
